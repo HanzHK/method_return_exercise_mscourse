@@ -8,13 +8,15 @@
  */
 
 using System;
+using System.Drawing;
 
 internal class Program
 {
     static void Main(string[] args)
     {
         CoinCount coinCount = new CoinCount();
-        coinCount.CompareIt();
+        coinCount.PrintOutCoinsAv();
+        coinCount.PrintOutResult();
     }
 
 }
@@ -33,20 +35,52 @@ internal class CoinCount
 
         return result;
     }
-    public bool CompareIt()
+
+    // Array which stores aviable coins
+    int[] coins = new int[] { 5, 5, 10, 10, 20, 20, 50 };
+
+    public int[] CompareIt()
     {
-        // Array which stores aviable coins
-        int[] coins = new int[] { 5, 5, 10, 10, 20, 20, 50 };
+
 
         // With what number we want to compare it to
         int changeToCompare = TargetNumber();
 
-        for (int i = 0; i < coins.Length ; i++)
+        for (int i = 0; i < coins.Length; i++)
         {
-            Console.WriteLine($"Checking first coin: {coins[i]}");
+            
+            for (int j = i + 1; j < coins.Length; j++)
+            {
+                if (coins[i] + coins[j] == changeToCompare)
+                {
+                    
+                    return new int[] { i, j };
+                }
+            }
+        }
+                return new int[] { -1, -1 };
+    }
+    public void PrintOutCoinsAv()
+    {
+        for (int i = 0; i < coins.Length; i++)
+        {
+            Console.WriteLine(coins[i]);
         }
 
-        return true;
+        }
+
+    public void PrintOutResult()
+    {
+        int[] result = CompareIt();
+
+        if (result[0] == -1)
+        {
+            Console.WriteLine("No valid coin combination found.");
+        }
+        else
+        {
+            Console.WriteLine($"Matching coins found at index positions: {result[0]} and {result[1]}");
+        }
     }
 
 }
